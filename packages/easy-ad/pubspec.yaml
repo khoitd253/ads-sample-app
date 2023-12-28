@@ -1,0 +1,30 @@
+name: easy_ads_flutter
+description: Easy Ads is a wrapper around famous ad packages which let you integrate ads easily
+version: 1.2.4
+
+publish_to: "none"
+
+environment:
+  sdk: ">=3.1.0 <4.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  google_mobile_ads:
+    git:
+      url: https://easy_ads:glpat-3kv3_oZr51s8vyPcBLfm@git.zen-s.com/trungdq/google-mobile-ads.git
+      ref: main
+  collection: ^1.17.2
+  logger: ^2.0.2
+  visibility_detector: ^0.4.0+2
+  shimmer: ^3.0.0
+  connectivity_plus: ^5.0.1
+  applovin_max:
+    path: ./packages/applovin_max
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^2.0.1
+
+flutter:
