@@ -4,7 +4,7 @@ import 'package:easy_ads_flutter/easy_ads_flutter.dart';
 import 'package:get/get.dart';
 
 class HomeController extends GetxController {
-  var indexToShowAd = [false, false, false].obs;
+  var indexToShowAd = List.generate(5, (index) => false).obs;
 
   void showInterAd() {
     EasyAds.instance.showInterstitialAd(

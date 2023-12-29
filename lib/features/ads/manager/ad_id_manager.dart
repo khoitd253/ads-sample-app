@@ -13,7 +13,9 @@ abstract class AppAdIdManager extends IAdIdManager {
 
   String get nativeId;
 
-  String get nativeFactory => "native_factory";
+  String get largeNativeFactory => "large_ad_factory";
+  String get mediumNativeFactory => "medium_ad_factory";
+  String get smallNativeFactory => "small_ad_factory";
 
   String get bannerId;
   String get bannerCollapseId;
@@ -24,11 +26,11 @@ abstract class AppAdIdManager extends IAdIdManager {
 
   /////////////////////////////////////////
 
-  double get smallNativeAdHeight;
+  double get smallNativeAdHeight => 80;
 
-  double get mediumNativeAdHeight;
+  double get mediumNativeAdHeight => 140;
 
-  double get largeNativeAdHeight;
+  double get largeNativeAdHeight => 270;
 
   @override
   AppAdIds? get admobAdIds => AppAdIds(appId: admobAppId);

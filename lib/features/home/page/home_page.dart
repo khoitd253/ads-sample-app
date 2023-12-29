@@ -47,12 +47,39 @@ class _HomePageState extends State<HomePage> {
                 child: const Text("Show Banner Collapsible Ad"),
               ),
               ElevatedButton(
-                onPressed: () => controller.changeAdIndex(2),
-                child: const Text("Show Native Ad"),
-              ),
-              ElevatedButton(
                 onPressed: controller.showRewardAd,
                 child: const Text("Show Reward Ad"),
+              ),
+              Row(
+                children: [
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: () => controller.changeAdIndex(2),
+                      child: const Text(
+                        "Large Native",
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: () => controller.changeAdIndex(3),
+                      child: const Text(
+                        "Medium Native",
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: () => controller.changeAdIndex(4),
+                      child: const Text(
+                        "Small Native",
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  ),
+                ],
               ),
               const Spacer(),
               if (controller.indexToShowAd[0])
@@ -73,10 +100,35 @@ class _HomePageState extends State<HomePage> {
                 ),
               if (controller.indexToShowAd[2])
                 EasyNativeAd(
-                  factoryId: adIdManager.nativeFactory,
+                  key: UniqueKey(),
+                  factoryId: adIdManager.largeNativeFactory,
+                  adId: adIdManager.nativeId,
+                  height: adIdManager.largeNativeAdHeight,
+                  color: const Color(0xfff6f6f6),
+                  border: null,
+                  padding: null,
+                  config: RemoteConfig.nativeConfig,
+                  visibilityDetectorKey: runtimeType.toString(),
+                ),
+              if (controller.indexToShowAd[3])
+                EasyNativeAd(
+                  key: UniqueKey(),
+                  factoryId: adIdManager.mediumNativeFactory,
                   adId: adIdManager.nativeId,
                   height: adIdManager.mediumNativeAdHeight,
-                  color: Colors.grey,
+                  color: const Color(0xfff6f6f6),
+                  border: null,
+                  padding: null,
+                  config: RemoteConfig.nativeConfig,
+                  visibilityDetectorKey: runtimeType.toString(),
+                ),
+              if (controller.indexToShowAd[4])
+                EasyNativeAd(
+                  key: UniqueKey(),
+                  factoryId: adIdManager.smallNativeFactory,
+                  adId: adIdManager.nativeId,
+                  height: adIdManager.smallNativeAdHeight,
+                  color: const Color(0xfff6f6f6),
                   border: null,
                   padding: null,
                   config: RemoteConfig.nativeConfig,

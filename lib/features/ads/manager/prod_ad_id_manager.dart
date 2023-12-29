@@ -4,15 +4,6 @@ import 'ad_id_manager.dart';
 
 class ProdAdIdManager extends AppAdIdManager {
   @override
-  double get mediumNativeAdHeight => 140;
-
-  @override
-  double get smallNativeAdHeight => 140;
-
-  @override
-  double get largeNativeAdHeight => 265;
-
-  @override
   AppAdIds? get appLovinAdIds => const AppAdIds(appId: "");
 
   @override
