@@ -1,16 +1,4 @@
-# ads_sample_app
+# ZenS Flutter Ads Sample App
 
-A new Flutter project.
-
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+A Flutter project that implement demo ads.
+For more information, please visit [document](https://automatic-blackbird-d22.notion.site/EasyAd-Documentation-Flutter-58a5c35e1497452e8c9eeeef22928fe5?pvs=74)
