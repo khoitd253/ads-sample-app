@@ -28,9 +28,9 @@ abstract class AppAdIdManager extends IAdIdManager {
 
   double get smallNativeAdHeight => 80;
 
-  double get mediumNativeAdHeight => 140;
+  double get mediumNativeAdHeight => 150;
 
-  double get largeNativeAdHeight => 270;
+  double get largeNativeAdHeight => 290;
 
   @override
   AppAdIds? get admobAdIds => AppAdIds(appId: admobAppId);
