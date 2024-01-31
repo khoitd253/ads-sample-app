@@ -146,7 +146,7 @@ class EasyAdmobNativeAd extends EasyAdBase {
           child: Stack(
             children: [
               if (ad != null && isAdLoaded) AdWidget(ad: ad),
-              if (_isAdLoading) const EasyLoadingAd(),
+              if (_isAdLoading) EasyLoadingAd(height: height ?? 0),
             ],
           ),
         ),

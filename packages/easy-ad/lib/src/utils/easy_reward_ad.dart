@@ -1,8 +1,12 @@
 import 'dart:async';
 
-import 'package:easy_ads_flutter/easy_ads_flutter.dart';
-import 'package:easy_ads_flutter/src/ump/ump_handler.dart';
 import 'package:flutter/material.dart';
+
+import '../consent_manager/consent_manager.dart';
+import '../easy_ad_base.dart';
+import '../easy_ads.dart';
+import '../enums/ad_network.dart';
+import '../enums/ad_unit_type.dart';
 
 class EasyRewardAd extends StatefulWidget {
   final AdNetwork adNetwork;
@@ -56,17 +60,20 @@ class _EasyRewardAdState extends State<EasyRewardAd> with WidgetsBindingObserver
   void initState() {
     WidgetsBinding.instance.addObserver(this);
     EasyAds.instance.setFullscreenAdShowing(true);
-    if (!UmpHandler.umpShowed) {
-      UmpHandler.handleRequestUmp(
-          handleOk: () {
-            initAndLoadAd();
-          },
-          handleError: () {});
-      _rewardAd?.load();
-    } else {
-      initAndLoadAd();
-    }
 
+    ConsentManager.ins.handleRequestUmp(
+      onPostExecute: () {
+        if (ConsentManager.ins.canRequestAds) {
+          initAndLoadAd();
+        } else {
+          if (mounted) {
+            Navigator.of(context).pop();
+          }
+          widget.onAdFailedToLoad?.call(widget.adNetwork, AdUnitType.rewarded, null, "");
+          EasyAds.instance.setFullscreenAdShowing(false);
+        }
+      },
+    );
     super.initState();
   }
 
@@ -91,9 +98,9 @@ class _EasyRewardAdState extends State<EasyRewardAd> with WidgetsBindingObserver
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async => false,
-      child: const Scaffold(
+    return const PopScope(
+      canPop: false,
+      child: Scaffold(
         body: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -176,5 +183,6 @@ class _EasyRewardAdState extends State<EasyRewardAd> with WidgetsBindingObserver
         );
       },
     );
+    _rewardAd!.load();
   }
 }

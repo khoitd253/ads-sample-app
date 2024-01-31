@@ -1,10 +1,10 @@
+import 'package:flutter/material.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
+
 import '../easy_ad_base.dart';
 import '../easy_ads.dart';
 import '../enums/ad_network.dart';
 import '../enums/ad_unit_type.dart';
-import 'package:flutter/material.dart';
-import 'package:google_mobile_ads/google_mobile_ads.dart';
-
 import '../utils/easy_loading_ad.dart';
 
 class EasyAdmobBannerAd extends EasyAdBase {
@@ -32,6 +32,7 @@ class EasyAdmobBannerAd extends EasyAdBase {
 
   @override
   AdUnitType get adUnitType => AdUnitType.banner;
+
   @override
   AdNetwork get adNetwork => AdNetwork.admob;
 
@@ -73,8 +74,7 @@ class EasyAdmobBannerAd extends EasyAdBase {
           _isAdLoaded = false;
           _isAdLoading = false;
           _isAdLoadedFailed = true;
-          EasyAds.instance.onAdFailedToLoadMethod(
-              adNetwork, adUnitType, ad, error.toString());
+          EasyAds.instance.onAdFailedToLoadMethod(adNetwork, adUnitType, ad, error.toString());
           onAdFailedToLoad?.call(adNetwork, adUnitType, ad, error.toString());
           ad.dispose();
         },
@@ -161,7 +161,9 @@ class EasyAdmobBannerAd extends EasyAdBase {
             if (_isAdLoading)
               Container(
                 color: Colors.white,
-                child: const EasyLoadingAd(),
+                child: EasyLoadingAd(
+                  height: adSize.height.toDouble(),
+                ),
               ),
           ],
         ),

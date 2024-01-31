@@ -5,13 +5,14 @@ import 'dart:ui' as ui;
 
 import 'package:applovin_max/applovin_max.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:easy_ads_flutter/easy_ads_flutter.dart';
-import 'package:easy_ads_flutter/src/easy_admob/easy_admob_interstitial_ad.dart';
-import 'package:easy_ads_flutter/src/ump/ump_handler.dart';
+import 'package:easy_ads_flutter/channel/easy_ad_platform_interface.dart';
+import 'package:easy_ads_flutter/src/consent_manager/consent_manager.dart';
 import 'package:easy_ads_flutter/src/utils/easy_logger.dart';
 import 'package:flutter/material.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
+import '../easy_ads_flutter.dart';
+import 'easy_admob/easy_admob_interstitial_ad.dart';
 import 'easy_admob/easy_admob_native_ad.dart';
 import 'easy_admob/easy_admob_rewarded_ad.dart';
 import 'easy_applovin/easy_applovin_app_open_ad.dart';
@@ -103,6 +104,8 @@ class EasyAds {
   AdSize? admobAdSize;
   Size? appLovinAdSize;
 
+  RequestConfiguration? admobConfiguration;
+
   /// Initializes the Google Mobile Ads SDK.
   ///
   /// Call this method as early as possible after the app launches
@@ -130,59 +133,62 @@ class EasyAds {
     String? nativeAdMediumId,
     String? nativeAdHighId,
 
-    /// UMP
-    bool umpConfig = true,
+    ///init mediation callback
+    Future<dynamic> Function(bool)? initMediationCallback,
   }) async {
+    ConsentManager.ins.initMediation = initMediationCallback;
+
     VisibilityDetectorController.instance.updateInterval = Duration.zero;
     if (enableLogger) _logger.enable(enableLogger);
     adIdManager = manager;
     if (adMobAdRequest != null) {
       _adRequest = adMobAdRequest;
     }
-    UmpHandler.umpConfig = umpConfig;
 
     if (manager.admobAdIds?.appId != null) {
+      this.admobConfiguration = admobConfiguration;
       if (navigatorKey?.currentContext != null) {
         admobAdSize = await AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(
             MediaQuery.sizeOf(navigatorKey!.currentContext!).width.toInt());
       }
+    }
 
-      final appLovinSdkId = manager.appLovinAdIds?.appId;
-      if (appLovinSdkId?.isNotEmpty == true) {
-        final response = await AppLovinMAX.initialize(appLovinSdkId!);
+    final appLovinSdkId = manager.appLovinAdIds?.appId;
+    if (appLovinSdkId?.isNotEmpty == true) {
+      final response = await AppLovinMAX.initialize(appLovinSdkId!);
 
-        AppLovinMAX.targetingData.maximumAdContentRating = isAgeRestrictedUserForApplovin == true
-            ? AdContentRating.allAudiences
-            : AdContentRating.none;
+      AppLovinMAX.targetingData.maximumAdContentRating = isAgeRestrictedUserForApplovin == true
+          ? AdContentRating.allAudiences
+          : AdContentRating.none;
 
-        if (keywordForApplovin != null) {
-          AppLovinMAX.targetingData.keywords = keywordForApplovin;
-        }
-
-        if (response != null) {
-          fireNetworkInitializedEvent(AdNetwork.appLovin, true);
-        } else {
-          fireNetworkInitializedEvent(AdNetwork.appLovin, false);
-        }
-        AppLovinMAX.setTestDeviceAdvertisingIds(['6280250c-a718-42a5-8e3a-a9ff2656a8a1']);
-
-        if (navigatorKey?.currentContext != null) {
-          final width = MediaQuery.sizeOf(navigatorKey!.currentContext!).width;
-          double? height = await AppLovinMAX.getAdaptiveBannerHeightForWidth(width);
-          height ??= isTablet() ? _leaderHeight : _bannerHeight;
-          appLovinAdSize = Size(width, height);
-        }
+      if (keywordForApplovin != null) {
+        AppLovinMAX.targetingData.keywords = keywordForApplovin;
       }
 
-      if (navigatorKey != null) {
-        this.navigatorKey = navigatorKey;
-        appLifecycleReactor = AppLifecycleReactor(
-          navigatorKey: navigatorKey,
-          adId: adResumeId,
-          adNetwork: adResumeNetwork,
-        );
-        appLifecycleReactor!.listenToAppStateChanges();
+      if (response != null) {
+        fireNetworkInitializedEvent(AdNetwork.appLovin, true);
+      } else {
+        fireNetworkInitializedEvent(AdNetwork.appLovin, false);
       }
+      AppLovinMAX.setTestDeviceAdvertisingIds(['6280250c-a718-42a5-8e3a-a9ff2656a8a1']);
+
+      if (navigatorKey?.currentContext != null) {
+        final width = MediaQuery.sizeOf(navigatorKey!.currentContext!).width;
+        double? height = await AppLovinMAX.getAdaptiveBannerHeightForWidth(width);
+        height ??= isTablet() ? _leaderHeight : _bannerHeight;
+        appLovinAdSize = Size(width, height);
+      }
+    }
+
+    if (navigatorKey != null) {
+      this.navigatorKey = navigatorKey;
+      appLifecycleReactor = AppLifecycleReactor(
+        navigatorKey: navigatorKey,
+        adId: adResumeId,
+        config: adResumeConfig,
+        adNetwork: adResumeNetwork,
+      );
+      appLifecycleReactor!.listenToAppStateChanges();
     }
   }
 
@@ -933,5 +939,9 @@ class EasyAds {
       return true;
     }
     return false;
+  }
+
+  Future<bool?> getConsentResult() async {
+    return await EasyAdPlatform.instance.getConsentResult();
   }
 }

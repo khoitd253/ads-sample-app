@@ -12,19 +12,20 @@ class AppLifecycleReactor {
 
   bool _onSplashScreen = true;
   bool _isExcludeScreen = false;
-  bool config = true;
+  bool config;
+
   int orientation = AppOpenAd.orientationPortrait;
 
   AppLifecycleReactor({
     required this.navigatorKey,
     required this.adId,
+    this.config = true,
     required this.adNetwork,
   });
 
   void listenToAppStateChanges() {
     AppStateEventNotifier.startListening();
-    AppStateEventNotifier.appStateStream
-        .forEach((state) => _onAppStateChanged(state));
+    AppStateEventNotifier.appStateStream.forEach((state) => _onAppStateChanged(state));
   }
 
   void setOnSplashScreen(bool value) {
@@ -53,9 +54,8 @@ class AppLifecycleReactor {
         if (await EasyAds.instance.isDeviceOffline()) {
           return;
         }
-        showDialog(
-          context: navigatorKey.currentContext!,
-          builder: (context) => EasyAppOpenAd(
+        navigatorKey.currentState?.push(
+          EasyAppOpenAd.navigate(
             adId: adId!,
             adNetwork: adNetwork,
             orientation: orientation,

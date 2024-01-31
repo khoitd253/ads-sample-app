@@ -1,8 +1,12 @@
 import 'dart:async';
 
-import 'package:easy_ads_flutter/easy_ads_flutter.dart';
-import 'package:easy_ads_flutter/src/ump/ump_handler.dart';
 import 'package:flutter/material.dart';
+
+import '../consent_manager/consent_manager.dart';
+import '../easy_ad_base.dart';
+import '../easy_ads.dart';
+import '../enums/ad_network.dart';
+import '../enums/ad_unit_type.dart';
 
 class EasyInterstitialAd extends StatefulWidget {
   final AdNetwork adNetwork;
@@ -106,15 +110,20 @@ class _EasyInterstitialAdState extends State<EasyInterstitialAd> with WidgetsBin
   @override
   void initState() {
     WidgetsBinding.instance.addObserver(this);
-    if (!UmpHandler.umpShowed) {
-      UmpHandler.handleRequestUmp(
-          handleOk: () {
-            initAndLoadAd();
-          },
-          handleError: () {});
-    } else {
-      initAndLoadAd();
-    }
+    EasyAds.instance.setFullscreenAdShowing(true);
+    ConsentManager.ins.handleRequestUmp(
+      onPostExecute: () {
+        if (ConsentManager.ins.canRequestAds) {
+          initAndLoadAd();
+        } else {
+          if (mounted) {
+            Navigator.of(context).pop();
+          }
+          widget.onAdFailedToLoad?.call(widget.adNetwork, AdUnitType.appOpen, null, "");
+          EasyAds.instance.setFullscreenAdShowing(false);
+        }
+      },
+    );
 
     super.initState();
   }
@@ -140,9 +149,9 @@ class _EasyInterstitialAdState extends State<EasyInterstitialAd> with WidgetsBin
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async => false,
-      child: const Scaffold(
+    return const PopScope(
+      canPop: false,
+      child: Scaffold(
         backgroundColor: Colors.white,
         body: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -170,6 +179,5 @@ class _EasyInterstitialAdState extends State<EasyInterstitialAd> with WidgetsBin
 
   void initAndLoadAd() {
     _interstitialAd?.load();
-    EasyAds.instance.setFullscreenAdShowing(true);
   }
 }

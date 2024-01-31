@@ -1,5 +1,6 @@
-import 'package:easy_ads_flutter/easy_ads_flutter.dart';
 import 'package:flutter/material.dart';
+
+import '../../easy_ads_flutter.dart';
 
 class EasyAdmobAppOpenAd extends EasyAdBase {
   final AdRequest adRequest;
@@ -18,6 +19,7 @@ class EasyAdmobAppOpenAd extends EasyAdBase {
     super.onEarnedReward,
     super.onPaidEvent,
   });
+
   AppOpenAd? _appOpenAd;
   bool _isShowingAd = false;
   bool _isAdLoaded = false;
@@ -87,10 +89,8 @@ class EasyAdmobAppOpenAd extends EasyAdBase {
           _isAdLoading = false;
           _isAdLoadedFailed = true;
           _isAdLoaded = false;
-          EasyAds.instance.onAdFailedToLoadMethod(
-              adNetwork, adUnitType, error, error.toString());
-          onAdFailedToLoad?.call(
-              adNetwork, adUnitType, error, error.toString());
+          EasyAds.instance.onAdFailedToLoadMethod(adNetwork, adUnitType, error, error.toString());
+          onAdFailedToLoad?.call(adNetwork, adUnitType, error, error.toString());
         },
       ),
     );
@@ -110,10 +110,10 @@ class EasyAdmobAppOpenAd extends EasyAdBase {
     }
 
     if (_isShowingAd) {
-      EasyAds.instance.onAdFailedToShowMethod(adNetwork, adUnitType, null,
-          'Tried to show ad while already showing an ad.');
-      onAdFailedToShow?.call(adNetwork, adUnitType, null,
-          'Tried to show ad while already showing an ad.');
+      EasyAds.instance.onAdFailedToShowMethod(
+          adNetwork, adUnitType, null, 'Tried to show ad while already showing an ad.');
+      onAdFailedToShow?.call(
+          adNetwork, adUnitType, null, 'Tried to show ad while already showing an ad.');
       return;
     }
 
@@ -135,8 +135,7 @@ class EasyAdmobAppOpenAd extends EasyAdBase {
       onAdFailedToShowFullScreenContent: (AppOpenAd ad, AdError error) {
         _isShowingAd = false;
 
-        EasyAds.instance.onAdFailedToShowMethod(
-            adNetwork, adUnitType, ad, error.toString());
+        EasyAds.instance.onAdFailedToShowMethod(adNetwork, adUnitType, ad, error.toString());
         onAdFailedToShow?.call(adNetwork, adUnitType, ad, error.toString());
 
         ad.dispose();

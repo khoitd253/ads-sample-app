@@ -1,10 +1,10 @@
-import 'package:easy_ads_flutter/src/easy_ad_base.dart';
-import 'package:easy_ads_flutter/src/enums/ad_network.dart';
-import 'package:easy_ads_flutter/src/enums/ad_unit_type.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
+import '../easy_ad_base.dart';
 import '../easy_ads.dart';
+import '../enums/ad_network.dart';
+import '../enums/ad_unit_type.dart';
 
 class EasyAdmobInterstitialAd extends EasyAdBase {
   final AdRequest adRequest;
@@ -90,10 +90,8 @@ class EasyAdmobInterstitialAd extends EasyAdBase {
           _isAdLoaded = false;
           _isAdLoading = false;
           _isAdLoadedFailed = true;
-          EasyAds.instance.onAdFailedToLoadMethod(
-              adNetwork, adUnitType, error, error.toString());
-          onAdFailedToLoad?.call(
-              adNetwork, adUnitType, error, error.toString());
+          EasyAds.instance.onAdFailedToLoadMethod(adNetwork, adUnitType, error, error.toString());
+          onAdFailedToLoad?.call(adNetwork, adUnitType, error, error.toString());
         },
       ),
     );
@@ -122,8 +120,7 @@ class EasyAdmobInterstitialAd extends EasyAdBase {
         ad.dispose();
       },
       onAdFailedToShowFullScreenContent: (InterstitialAd ad, AdError error) {
-        EasyAds.instance.onAdFailedToShowMethod(
-            adNetwork, adUnitType, ad, error.toString());
+        EasyAds.instance.onAdFailedToShowMethod(adNetwork, adUnitType, ad, error.toString());
         onAdFailedToShow?.call(adNetwork, adUnitType, ad, error.toString());
 
         ad.dispose();

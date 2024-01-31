@@ -1,7 +1,10 @@
 import 'dart:async';
 
-import 'package:easy_ads_flutter/easy_ads_flutter.dart';
 import 'package:logger/logger.dart';
+
+import '../easy_ads.dart';
+import '../enums/ad_event_type.dart';
+import 'ad_event.dart';
 
 /// [EasyLogger] is used to listen to the callbacks in stream & show logs
 class EasyLogger {

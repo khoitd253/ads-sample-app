@@ -1,6 +1,8 @@
 import 'package:ads_sample_app/features/ads/remote/remote_config.dart';
 import 'package:ads_sample_app/features/home/page/home_page.dart';
 import 'package:easy_ads_flutter/easy_ads_flutter.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
 import '../../../main.dart';
@@ -25,19 +27,32 @@ class SplashController extends GetxController {
   }
 
   Future<void> _initAdsModule() async {
-    String? env = "dev";
+    try {
+      /// get flavor here
+      String? env = "";
+      try {
+        env = await const MethodChannel('channel').invokeMethod<String>('flavor');
+      } catch (e) {
+        env = "dev";
+      }
+      adIdManager = env == "dev" ? DevAdIdManager() : ProdAdIdManager();
 
-    adIdManager = env == "dev" ? DevAdIdManager() : ProdAdIdManager();
-
-    await EasyAds.instance.initialize(
-      adIdManager,
-      navigatorKey: Get.key,
-      adMobAdRequest: const AdRequest(httpTimeoutMillis: 30000),
-      admobConfiguration: RequestConfiguration(testDeviceIds: ['']),
-      adResumeConfig: RemoteConfig.resumeConfig,
-      adResumeId: adIdManager.adOpenResume,
-      umpConfig: DateTime.now().isAfter(DateTime(2024, 1, 16)),
-    );
+      await EasyAds.instance.initialize(
+        adIdManager,
+        navigatorKey: Get.key,
+        adMobAdRequest: const AdRequest(httpTimeoutMillis: 30000),
+        admobConfiguration: RequestConfiguration(testDeviceIds: ['']),
+        adResumeId: adIdManager.adOpenResume,
+        adResumeConfig: RemoteConfig.resumeConfig,
+        initMediationCallback: (bool canRequestAds) =>
+            const MethodChannel('channel').invokeMethod<bool>('init_mediation', canRequestAds),
+      );
+    } catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
+      _handleNextScreen(true);
+    }
   }
 
   void _showInterSplashAndAppOpen() {

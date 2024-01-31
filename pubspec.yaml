@@ -13,6 +13,7 @@ dependencies:
   easy_ads_flutter:
     path: ./packages/easy-ad
   get: ^4.6.6
+  flutter_flavorizr: ^2.2.1
 
 dev_dependencies:
   flutter_test:
@@ -22,3 +23,35 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+
+
+
+
+
+# dart run flutter_flavorizr -p android:buildGradle,android:androidManifest,google:firebase
+flavorizr:
+  flavors:
+    dev:
+      app:
+        name: "(Dev) Ads Sample"
+
+      android:
+        applicationId: "com.example.ads_sample.dev"
+        resValues:
+          ads_app_id:
+            type: "string"
+            value: "ca-app-pub-3940256099942544~3347511713"
+        firebase:
+          config: ".firebase/dev/google-services.json"
+    prod:
+      app:
+        name: "Ads Sample"
+
+      android:
+        applicationId: "com.example.ads_sample.prod"
+        resValues:
+          ads_app_id:
+            type: "string"
+            value: "real-app-id-here"
+        firebase:
+          config: ".firebase/prod/google-services.json"

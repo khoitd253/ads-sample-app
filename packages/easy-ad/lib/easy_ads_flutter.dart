@@ -1,4 +1,4 @@
-library easy_ads_flutter;
+library easy_ads_2;
 
 export 'package:easy_ads_flutter/src/easy_ad_base.dart';
 export 'package:easy_ads_flutter/src/easy_admob/easy_admob_app_open_ad.dart';

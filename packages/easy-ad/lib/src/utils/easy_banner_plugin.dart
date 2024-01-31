@@ -1,8 +1,12 @@
 import 'dart:async';
 
-import 'package:easy_ads_flutter/easy_ads_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:visibility_detector/visibility_detector.dart';
+
+import '../easy_ad_base.dart';
+import '../easy_ads.dart';
+import '../enums/ad_network.dart';
+import '../enums/ad_unit_type.dart';
 
 class EasyBannerPlugin extends StatefulWidget {
   final AdNetwork adNetwork;

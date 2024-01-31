@@ -1,6 +1,5 @@
 import 'package:applovin_max/applovin_max.dart';
 import 'package:easy_ads_flutter/src/enums/ad_network.dart';
-
 import 'package:easy_ads_flutter/src/enums/ad_unit_type.dart';
 import 'package:flutter/material.dart';
 
@@ -51,8 +50,7 @@ class EasyAppLovinNativeAd extends EasyAdBase {
   @override
   bool get isAdLoading => _isAdLoading;
 
-  final MaxNativeAdViewController nativeAdViewController =
-      MaxNativeAdViewController();
+  final MaxNativeAdViewController nativeAdViewController = MaxNativeAdViewController();
 
   @override
   Future<void> load() async {
@@ -72,9 +70,7 @@ class EasyAppLovinNativeAd extends EasyAdBase {
       children: [
         MaxNativeAdView(
           adUnitId: adUnitId,
-          height: padding != null && height != null
-              ? height + padding.vertical
-              : height,
+          height: padding != null && height != null ? height + padding.vertical : height,
           controller: nativeAdViewController,
           listener: NativeAdListener(
             onAdLoadedCallback: (ad) {
@@ -88,10 +84,9 @@ class EasyAppLovinNativeAd extends EasyAdBase {
               _isAdLoaded = false;
               _isAdLoading = false;
               _isAdLoadedFailed = true;
-              EasyAds.instance.onAdFailedToLoadMethod(
-                  adNetwork, adUnitType, null, error.toString());
-              onAdFailedToLoad?.call(
-                  adNetwork, adUnitType, null, error.toString());
+              EasyAds.instance
+                  .onAdFailedToLoadMethod(adNetwork, adUnitType, null, error.toString());
+              onAdFailedToLoad?.call(adNetwork, adUnitType, null, error.toString());
             },
             onAdClickedCallback: (ad) {
               EasyAds.instance.appLifecycleReactor?.setIsExcludeScreen(true);
@@ -151,7 +146,9 @@ class EasyAppLovinNativeAd extends EasyAdBase {
               child: Container(
                 color: color,
                 height: height,
-                child: const EasyLoadingAd(),
+                child: EasyLoadingAd(
+                  height: 150,
+                ),
               ),
             ),
           ),

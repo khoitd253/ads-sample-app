@@ -1,6 +1,5 @@
 import 'package:applovin_max/applovin_max.dart';
 import 'package:easy_ads_flutter/src/enums/ad_network.dart';
-
 import 'package:easy_ads_flutter/src/enums/ad_unit_type.dart';
 import 'package:flutter/material.dart';
 
@@ -13,6 +12,7 @@ class EasyAppLovinBannerAd extends EasyAdBase {
   final Map<String, String?>? extraParameters;
   final Map<String, dynamic>? localExtraParameters;
   final Size adSize;
+
   EasyAppLovinBannerAd({
     required super.adUnitId,
     super.onAdLoaded,
@@ -55,8 +55,7 @@ class EasyAppLovinBannerAd extends EasyAdBase {
   @override
   bool get isAdLoading => _isAdLoading;
 
-  final MaxBannerAdViewController bannerAdViewController =
-      MaxBannerAdViewController();
+  final MaxBannerAdViewController bannerAdViewController = MaxBannerAdViewController();
 
   @override
   Future<void> load() async {
@@ -103,34 +102,27 @@ class EasyAppLovinBannerAd extends EasyAdBase {
                   _isAdLoaded = false;
                   _isAdLoading = false;
                   _isAdLoadedFailed = true;
-                  EasyAds.instance.onAdFailedToLoadMethod(
-                      adNetwork,
-                      adUnitType,
-                      null,
+                  EasyAds.instance.onAdFailedToLoadMethod(adNetwork, adUnitType, null,
                       'Error occurred while loading $adNetwork ad with ${error.code.toString()} and message:  ${error.message}');
                   onAdFailedToLoad?.call(adNetwork, adUnitType, null,
                       'Error occurred while loading $adNetwork ad with ${error.code.toString()} and message:  ${error.message}');
                 },
                 onAdClickedCallback: (_) {
-                  EasyAds.instance.appLifecycleReactor
-                      ?.setIsExcludeScreen(true);
-                  EasyAds.instance
-                      .onAdClickedMethod(adNetwork, adUnitType, null);
+                  EasyAds.instance.appLifecycleReactor?.setIsExcludeScreen(true);
+                  EasyAds.instance.onAdClickedMethod(adNetwork, adUnitType, null);
                   onAdClicked?.call(adNetwork, adUnitType, null);
                 },
                 onAdExpandedCallback: (ad) {
                   Future.delayed(
                     const Duration(milliseconds: 500),
                     () {
-                      EasyAds.instance
-                          .onAdShowedMethod(adNetwork, adUnitType, ad);
+                      EasyAds.instance.onAdShowedMethod(adNetwork, adUnitType, ad);
                       onAdShowed?.call(adNetwork, adUnitType, ad);
                     },
                   );
                 },
                 onAdCollapsedCallback: (ad) {
-                  EasyAds.instance
-                      .onAdDismissedMethod(adNetwork, adUnitType, ad);
+                  EasyAds.instance.onAdDismissedMethod(adNetwork, adUnitType, ad);
                   onAdDismissed?.call(adNetwork, adUnitType, ad);
                 },
                 onAdRevenuePaidCallback: (ad) {
@@ -173,7 +165,9 @@ class EasyAppLovinBannerAd extends EasyAdBase {
                   bottom: BorderSide(color: Colors.black, width: 2),
                 ),
               ),
-              child: const EasyLoadingAd(),
+              child: EasyLoadingAd(
+                height: adSize.height,
+              ),
             ),
           ),
       ],

@@ -1,11 +1,10 @@
 import 'package:applovin_max/applovin_max.dart';
-import 'package:easy_ads_flutter/src/enums/ad_network.dart';
-
-import 'package:easy_ads_flutter/src/enums/ad_unit_type.dart';
+import '../easy_ads.dart';
+import '../enums/ad_network.dart';
+import '../enums/ad_unit_type.dart';
 import 'package:flutter/material.dart';
 
 import '../easy_ad_base.dart';
-import '../easy_ads.dart';
 
 class EasyAppLovinRewardAd extends EasyAdBase {
   EasyAppLovinRewardAd({

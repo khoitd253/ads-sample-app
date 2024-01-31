@@ -1,6 +1,7 @@
-import 'package:easy_ads_flutter/src/enums/ad_network.dart';
-import 'package:easy_ads_flutter/src/enums/ad_unit_type.dart';
 import 'package:flutter/material.dart';
+
+import 'enums/ad_network.dart';
+import 'enums/ad_unit_type.dart';
 
 abstract class EasyAdBase {
   final String adUnitId;

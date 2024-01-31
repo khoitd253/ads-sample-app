@@ -1,11 +1,10 @@
 import 'package:applovin_max/applovin_max.dart';
-import 'package:easy_ads_flutter/src/enums/ad_network.dart';
-
-import 'package:easy_ads_flutter/src/enums/ad_unit_type.dart';
 import 'package:flutter/material.dart';
 
 import '../easy_ad_base.dart';
 import '../easy_ads.dart';
+import '../enums/ad_network.dart';
+import '../enums/ad_unit_type.dart';
 
 class EasyApplovinInterstitialAd extends EasyAdBase {
   EasyApplovinInterstitialAd({
@@ -50,8 +49,7 @@ class EasyApplovinInterstitialAd extends EasyAdBase {
           onAdClicked?.call(adNetwork, adUnitType, ad);
         },
         onAdDisplayFailedCallback: (ad, error) {
-          EasyAds.instance.onAdFailedToShowMethod(
-              adNetwork, adUnitType, ad, error.toString());
+          EasyAds.instance.onAdFailedToShowMethod(adNetwork, adUnitType, ad, error.toString());
           onAdFailedToShow?.call(adNetwork, adUnitType, ad, error.toString());
         },
         onAdDisplayedCallback: (ad) {
@@ -66,10 +64,8 @@ class EasyApplovinInterstitialAd extends EasyAdBase {
           _isAdLoaded = false;
           _isAdLoading = false;
           _isAdLoadedFailed = true;
-          EasyAds.instance.onAdFailedToLoadMethod(
-              adNetwork, adUnitType, error, error.toString());
-          onAdFailedToLoad?.call(
-              adNetwork, adUnitType, error, error.toString());
+          EasyAds.instance.onAdFailedToLoadMethod(adNetwork, adUnitType, error, error.toString());
+          onAdFailedToLoad?.call(adNetwork, adUnitType, error, error.toString());
         },
         onAdLoadedCallback: (ad) {
           _isAdLoaded = true;

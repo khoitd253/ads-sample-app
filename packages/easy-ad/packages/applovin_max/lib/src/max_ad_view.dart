@@ -274,8 +274,8 @@ class _MaxAdViewState extends State<MaxAdView> {
   }
 
   bool _isTablet() {
-    final double devicePixelRatio = ui.window.devicePixelRatio;
-    final ui.Size size = ui.window.physicalSize;
+    final double devicePixelRatio =PlatformDispatcher.instance.views.first.devicePixelRatio;
+    final ui.Size size = PlatformDispatcher.instance.views.first.physicalSize;
     final double width = size.width;
     final double height = size.height;
 

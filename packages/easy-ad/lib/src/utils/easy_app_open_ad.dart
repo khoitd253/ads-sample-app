@@ -1,8 +1,9 @@
 import 'dart:async';
 
-import 'package:easy_ads_flutter/easy_ads_flutter.dart';
-import 'package:easy_ads_flutter/src/ump/ump_handler.dart';
 import 'package:flutter/material.dart';
+
+import '../../easy_ads_flutter.dart';
+import '../consent_manager/consent_manager.dart';
 
 class EasyAppOpenAd extends StatefulWidget {
   final AdNetwork adNetwork;
@@ -32,12 +33,91 @@ class EasyAppOpenAd extends StatefulWidget {
     this.onPaidEvent,
   }) : super(key: key);
 
+  /// return the current route of this class, use to remove from stack
+  static MaterialPageRoute? currentRoute;
+
+  static MaterialPageRoute navigate({
+    required String adId,
+    AdNetwork adNetwork = AdNetwork.admob,
+    int orientation = AppOpenAd.orientationPortrait,
+  }) {
+    currentRoute = null;
+    currentRoute = MaterialPageRoute(
+      builder: (context) => EasyAppOpenAd(
+        adId: adId,
+        adNetwork: adNetwork,
+        orientation: orientation,
+      ),
+    );
+    return currentRoute!;
+  }
+
   @override
   State<EasyAppOpenAd> createState() => _EasyAppOpenAdState();
 }
 
 class _EasyAppOpenAdState extends State<EasyAppOpenAd> with WidgetsBindingObserver {
-  late final EasyAdBase? _appOpenAd;
+  late final EasyAdBase? _appOpenAd = EasyAds.instance.createAppOpenAd(
+    adNetwork: widget.adNetwork,
+    adId: widget.adId,
+    orientation: widget.orientation,
+    onAdLoaded: (adNetwork, adUnitType, data) {
+      widget.onAdLoaded?.call(adNetwork, adUnitType, data);
+      _showAd();
+    },
+    onAdClicked: (adNetwork, adUnitType, data) {
+      widget.onAdClicked?.call(adNetwork, adUnitType, data);
+    },
+    onAdDismissed: (adNetwork, adUnitType, data) {
+      if (widget.onAdShowed == null) {
+        _closeAd();
+      }
+      widget.onAdDismissed?.call(adNetwork, adUnitType, data);
+      EasyAds.instance.setFullscreenAdShowing(false);
+    },
+    onAdFailedToLoad: (adNetwork, adUnitType, data, errorMessage) {
+      widget.onAdFailedToLoad?.call(adNetwork, adUnitType, data, errorMessage);
+      if (mounted) {
+        _closeAd();
+      }
+      EasyAds.instance.setFullscreenAdShowing(false);
+    },
+    onAdFailedToShow: (adNetwork, adUnitType, data, errorMessage) {
+      widget.onAdFailedToShow?.call(adNetwork, adUnitType, data, errorMessage);
+      if (mounted) {
+        _closeAd();
+      }
+      EasyAds.instance.setFullscreenAdShowing(false);
+    },
+    onAdShowed: (adNetwork, adUnitType, data) {
+      if (widget.onAdShowed != null) {
+        _closeAd();
+        widget.onAdShowed!.call(adNetwork, adUnitType, data);
+      }
+    },
+    onEarnedReward: (adNetwork, adUnitType, rewardType, rewardAmount) {
+      widget.onEarnedReward?.call(adNetwork, adUnitType, rewardType, rewardAmount);
+    },
+    onPaidEvent: ({
+      required AdNetwork adNetwork,
+      required AdUnitType adUnitType,
+      required double revenue,
+      required String currencyCode,
+      String? network,
+      String? unit,
+      String? placement,
+    }) {
+      widget.onPaidEvent?.call(
+        adNetwork: adNetwork,
+        adUnitType: adUnitType,
+        revenue: revenue,
+        currencyCode: currencyCode,
+        network: network,
+        unit: unit,
+        placement: placement,
+      );
+    },
+  );
 
   Future<void> _showAd() => Future.delayed(
         const Duration(milliseconds: 500),
@@ -52,23 +132,30 @@ class _EasyAppOpenAdState extends State<EasyAppOpenAd> with WidgetsBindingObserv
         },
       );
 
+  void _closeAd() {
+    if (EasyAppOpenAd.currentRoute != null) {
+      Navigator.of(context).removeRoute(EasyAppOpenAd.currentRoute as Route);
+      EasyAppOpenAd.currentRoute = null;
+    }
+  }
+
   @override
   void initState() {
     WidgetsBinding.instance.addObserver(this);
     EasyAds.instance.setFullscreenAdShowing(true);
-    if (!UmpHandler.umpShowed) {
-      UmpHandler.handleRequestUmp(handleOk: () {
-        initAndLoadAd();
-      }, handleError: () {
-        if (mounted) {
-          Navigator.of(context).pop();
+    ConsentManager.ins.handleRequestUmp(
+      onPostExecute: () {
+        if (ConsentManager.ins.canRequestAds) {
+          initAndLoadAd();
+        } else {
+          if (mounted) {
+            Navigator.of(context).pop();
+          }
+          widget.onAdFailedToLoad?.call(widget.adNetwork, AdUnitType.appOpen, null, "");
+          EasyAds.instance.setFullscreenAdShowing(false);
         }
-        widget.onAdFailedToLoad?.call(widget.adNetwork, AdUnitType.appOpen, null, "");
-        EasyAds.instance.setFullscreenAdShowing(false);
-      });
-    } else {
-      initAndLoadAd();
-    }
+      },
+    );
     super.initState();
   }
 
@@ -91,75 +178,14 @@ class _EasyAppOpenAdState extends State<EasyAppOpenAd> with WidgetsBindingObserv
   }
 
   void initAndLoadAd() {
-    _appOpenAd = EasyAds.instance.createAppOpenAd(
-      adNetwork: widget.adNetwork,
-      adId: widget.adId,
-      orientation: widget.orientation,
-      onAdLoaded: (adNetwork, adUnitType, data) {
-        widget.onAdLoaded?.call(adNetwork, adUnitType, data);
-        _showAd();
-      },
-      onAdClicked: (adNetwork, adUnitType, data) {
-        widget.onAdClicked?.call(adNetwork, adUnitType, data);
-      },
-      onAdDismissed: (adNetwork, adUnitType, data) {
-        if (widget.onAdShowed == null) {
-          Navigator.of(context).pop();
-        }
-        widget.onAdDismissed?.call(adNetwork, adUnitType, data);
-        EasyAds.instance.setFullscreenAdShowing(false);
-      },
-      onAdFailedToLoad: (adNetwork, adUnitType, data, errorMessage) {
-        if (mounted) {
-          Navigator.of(context).pop();
-        }
-        widget.onAdFailedToLoad?.call(adNetwork, adUnitType, data, errorMessage);
-        EasyAds.instance.setFullscreenAdShowing(false);
-      },
-      onAdFailedToShow: (adNetwork, adUnitType, data, errorMessage) {
-        if (mounted) {
-          Navigator.of(context).pop();
-        }
-        widget.onAdFailedToShow?.call(adNetwork, adUnitType, data, errorMessage);
-        EasyAds.instance.setFullscreenAdShowing(false);
-      },
-      onAdShowed: (adNetwork, adUnitType, data) {
-        if (widget.onAdShowed != null) {
-          Navigator.of(context).pop();
-          widget.onAdShowed!.call(adNetwork, adUnitType, data);
-        }
-      },
-      onEarnedReward: (adNetwork, adUnitType, rewardType, rewardAmount) {
-        widget.onEarnedReward?.call(adNetwork, adUnitType, rewardType, rewardAmount);
-      },
-      onPaidEvent: ({
-        required AdNetwork adNetwork,
-        required AdUnitType adUnitType,
-        required double revenue,
-        required String currencyCode,
-        String? network,
-        String? unit,
-        String? placement,
-      }) {
-        widget.onPaidEvent?.call(
-          adNetwork: adNetwork,
-          adUnitType: adUnitType,
-          revenue: revenue,
-          currencyCode: currencyCode,
-          network: network,
-          unit: unit,
-          placement: placement,
-        );
-      },
-    );
     _appOpenAd?.load();
   }
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async => false,
-      child: const Scaffold(
+    return const PopScope(
+      canPop: false,
+      child: Scaffold(
         backgroundColor: Colors.white,
         body: Column(
           mainAxisAlignment: MainAxisAlignment.center,

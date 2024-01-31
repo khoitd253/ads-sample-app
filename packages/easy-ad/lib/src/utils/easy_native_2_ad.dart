@@ -1,10 +1,13 @@
 import 'dart:async';
 
-import 'package:easy_ads_flutter/easy_ads_flutter.dart';
-import 'package:easy_ads_flutter/src/ump/ump_handler.dart';
 import 'package:flutter/material.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
+import '../consent_manager/consent_manager.dart';
+import '../easy_ad_base.dart';
+import '../easy_ads.dart';
+import '../enums/ad_network.dart';
+import '../enums/ad_unit_type.dart';
 import 'easy_loading_ad.dart';
 
 class EasyNative2Ad extends StatefulWidget {
@@ -139,15 +142,15 @@ class _EasyNative2AdState extends State<EasyNative2Ad> with WidgetsBindingObserv
       return;
     }
 
-    if (!UmpHandler.umpShowed) {
-      UmpHandler.handleRequestUmp(
-          handleOk: () {
-            initAndLoadAd();
-          },
-          handleError: () {});
-    } else {
-      initAndLoadAd();
-    }
+    ConsentManager.ins.handleRequestUmp(
+      onPostExecute: () {
+        if (ConsentManager.ins.canRequestAds) {
+          initAndLoadAd();
+        } else {
+          return;
+        }
+      },
+    );
   }
 
   @override
@@ -223,7 +226,9 @@ class _EasyNative2AdState extends State<EasyNative2Ad> with WidgetsBindingObserv
                         borderRadius: widget.borderRadius,
                         child: SizedBox(
                           height: widget.height,
-                          child: const EasyLoadingAd(),
+                          child: EasyLoadingAd(
+                            height: widget.height,
+                          ),
                         ),
                       ),
                     );
