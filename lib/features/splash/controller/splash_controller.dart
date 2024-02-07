@@ -29,13 +29,7 @@ class SplashController extends GetxController {
   Future<void> _initAdsModule() async {
     try {
       /// get flavor here
-      String? env = "";
-      try {
-        env = await const MethodChannel('channel').invokeMethod<String>('flavor');
-      } catch (e) {
-        env = "dev";
-      }
-      adIdManager = env == "dev" ? DevAdIdManager() : ProdAdIdManager();
+      adIdManager = appFlavor == "prod" ? ProdAdIdManager() : DevAdIdManager();
 
       await EasyAds.instance.initialize(
         adIdManager,

@@ -23,8 +23,6 @@ public class MainActivity extends FlutterActivity {
                             initMediation(canRequestAds);
                             result.success(true);
                         }
-                        case "flavor":
-                            result.success(BuildConfig.FLAVOR);
                     }
                 });
 
