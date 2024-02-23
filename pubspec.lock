@@ -4,9 +4,11 @@ packages:
   applovin_max:
     dependency: transitive
     description:
-      path: "packages/easy-ad/packages/applovin_max"
-      relative: true
-    source: path
+      path: "packages/applovin_max"
+      ref: main
+      resolved-ref: d67d0635da7a4ba95f122f94845db22c886dceba
+      url: "git@github.com:trungs99/easy_ads.git"
+    source: git
     version: "3.3.0"
   archive:
     dependency: transitive
@@ -115,9 +117,11 @@ packages:
   easy_ads_flutter:
     dependency: "direct main"
     description:
-      path: "packages/easy-ad"
-      relative: true
-    source: path
+      path: "."
+      ref: main
+      resolved-ref: d67d0635da7a4ba95f122f94845db22c886dceba
+      url: "git@github.com:trungs99/easy_ads.git"
+    source: git
     version: "0.0.1"
   equatable:
     dependency: transitive

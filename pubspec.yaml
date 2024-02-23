@@ -11,7 +11,10 @@ dependencies:
     sdk: flutter
 
   easy_ads_flutter:
-    path: ./packages/easy-ad
+    git:
+      url: git@github.com:trungs99/easy_ads.git
+      ref: main
+
   get: ^4.6.6
   flutter_flavorizr: ^2.2.1
 
