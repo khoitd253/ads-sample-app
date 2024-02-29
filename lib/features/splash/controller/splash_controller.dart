@@ -6,8 +6,6 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
 import '../../../main.dart';
-import '../../ads/manager/dev_ad_id_manager.dart';
-import '../../ads/manager/prod_ad_id_manager.dart';
 
 class SplashController extends GetxController {
   void initAdModule() {
@@ -28,12 +26,10 @@ class SplashController extends GetxController {
 
   Future<void> _initAdsModule() async {
     try {
-      /// get flavor here
-      adIdManager = appFlavor == "prod" ? ProdAdIdManager() : DevAdIdManager();
-
       await EasyAds.instance.initialize(
         adIdManager,
         navigatorKey: Get.key,
+        isDevMode: appFlavor != "prod",
         adMobAdRequest: const AdRequest(httpTimeoutMillis: 30000),
         admobConfiguration: RequestConfiguration(testDeviceIds: ['']),
         adResumeId: adIdManager.adOpenResume,

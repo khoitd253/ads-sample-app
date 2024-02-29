@@ -4,7 +4,7 @@ publish_to: 'none'
 version: 1.0.0+1
 environment:
   sdk: '>=3.2.2 <4.0.0'
-# This app was created with Flutter v3.16.2 - Dart v3.2.2 - Devtool v2.28.3
+# This app was created with Flutter v3.19.0 - Dart v3.3.0 - Devtool v2.31.1
 
 dependencies:
   flutter:

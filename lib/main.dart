@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 import 'features/app.dart';
 
-late AppAdIdManager adIdManager;
+AppAdIdManager adIdManager = AppAdIdManager();
 
 void main() {
   runApp(const MyApp());
