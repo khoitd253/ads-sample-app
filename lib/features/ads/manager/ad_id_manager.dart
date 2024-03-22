@@ -9,23 +9,23 @@ class AppAdIdManager extends IAdIdManager {
 
   String get smallNativeFactory => "small_ad_factory";
 
-  String get appOpenSplashId => "";
+  String get appOpenSplashId => "ca-pub-xxxx";
 
-  String get interSplashId => "";
+  String get interSplashId => "ca-pub-xxxx";
 
-  String get resumeId => "";
+  String get resumeId => "ca-pub-xxxx";
 
-  String get interId => "";
+  String get interId => "ca-pub-xxxx";
 
-  String get nativeId => "";
+  String get nativeId => "ca-pub-xxxx";
 
-  String get bannerId => "";
+  String get bannerId => "ca-pub-xxxx";
 
-  String get bannerCollapseId => "";
+  String get bannerCollapseId => "ca-pub-xxxx";
 
-  String get rewardId => "";
+  String get rewardId => "ca-pub-xxxx";
 
-  String get adOpenResume => "";
+  String get adOpenResume => "ca-pub-xxxx";
 
   /////////////////////////////////////////
 

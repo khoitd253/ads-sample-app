@@ -6,7 +6,7 @@ packages:
     description:
       path: "packages/applovin_max"
       ref: main
-      resolved-ref: de9afd4e7b6cd30b707e3dee20469d69d8621c3a
+      resolved-ref: "7c6bbc8db615a9085646199557b3a9c4d93ef24d"
       url: "git@github.com:trungs99/easy_ads.git"
     source: git
     version: "3.3.0"
@@ -117,12 +117,10 @@ packages:
   easy_ads_flutter:
     dependency: "direct main"
     description:
-      path: "."
-      ref: main
-      resolved-ref: de9afd4e7b6cd30b707e3dee20469d69d8621c3a
-      url: "git@github.com:trungs99/easy_ads.git"
-    source: git
-    version: "0.0.1"
+      path: "../easy_ads"
+      relative: true
+    source: path
+    version: "2.1.1"
   equatable:
     dependency: transitive
     description:
@@ -189,10 +187,11 @@ packages:
   google_mobile_ads:
     dependency: transitive
     description:
-      name: google_mobile_ads
-      sha256: d2ef5ec1e1f31137fc241bdeab3037c31062d387dd221fd884fb1160444c788b
-      url: "https://pub.dev"
-    source: hosted
+      path: "packages/google_mobile_ads"
+      ref: main
+      resolved-ref: "7c6bbc8db615a9085646199557b3a9c4d93ef24d"
+      url: "git@github.com:trungs99/easy_ads.git"
+    source: git
     version: "4.0.0"
   image:
     dependency: transitive

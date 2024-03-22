@@ -7,6 +7,8 @@ import 'package:get/get.dart';
 
 import '../../../main.dart';
 
+EasyPreloadNativeController? preloadController;
+
 class SplashController extends GetxController {
   void initAdModule() {
     RemoteConfig.init().then((_) {
@@ -14,13 +16,7 @@ class SplashController extends GetxController {
       RemoteConfig.getRemoteConfig();
 
       /// Then init the ads module
-      _initAdsModule().then((_) {
-        /// choose one of the following cases:
-        _showInterSplashAndAppOpen();
-        // _showWith2InterSplash();
-        // _showAppOpenSplash();
-        // _showInterSplash();
-      });
+      _initAdsModule();
     });
   }
 
@@ -36,6 +32,23 @@ class SplashController extends GetxController {
         adResumeConfig: RemoteConfig.resumeConfig,
         initMediationCallback: (bool canRequestAds) =>
             const MethodChannel('channel').invokeMethod<bool>('init_mediation', canRequestAds),
+        onInitialized: (bool canRequestAds) {
+          ///preload native ad
+          preloadController = EasyPreloadNativeController(
+            nativeNormalId: adIdManager.nativeId,
+            nativeMediumId: adIdManager.nativeId,
+            nativeHighId: adIdManager.nativeId,
+            limitLoad: 3,
+          );
+          preloadController?.load();
+
+          /// choose one of the following cases:
+          _showInterSplashAndAppOpen();
+
+          // _showWith2InterSplash();
+          // _showAppOpenSplash();
+          // _showInterSplash();
+        },
       );
     } catch (e) {
       if (kDebugMode) {
@@ -56,7 +69,6 @@ class SplashController extends GetxController {
       onDismissed: (type) {
         EasyAds.instance.appLifecycleReactor?.setOnSplashScreen(false);
       },
-      immersiveModeEnabled: true,
       orientation: AppOpenAd.orientationPortrait,
       configInterstitial: RemoteConfig.interSplashConfig,
       configAppOpen: RemoteConfig.appOpenSplashConfig,
@@ -69,7 +81,6 @@ class SplashController extends GetxController {
       interstitialSplashHighId: adIdManager.interSplashId,
       config: RemoteConfig.interConfig,
       configHigh: RemoteConfig.interConfig,
-      immersiveModeEnabled: true,
       onDisabled: () => _handleNextScreen(true),
       onShowed: (type) => _handleNextScreen(),
       onFailedToLoad: () => _handleNextScreen(true),
@@ -98,7 +109,6 @@ class SplashController extends GetxController {
     EasyAds.instance.showInterstitialAd(
       adId: adIdManager.interSplashId,
       config: RemoteConfig.interSplashConfig,
-      immersiveModeEnabled: true,
       onDisabled: () => _handleNextScreen(true),
       onAdShowed: (adNetwork, adUnitType, data) => _handleNextScreen(),
       onAdDismissed: (adNetwork, adUnitType, data) {
@@ -115,6 +125,6 @@ class SplashController extends GetxController {
       EasyAds.instance.appLifecycleReactor?.setOnSplashScreen(false);
     }
 
-    Get.to(() => const HomePage());
+    Get.offAll(() => const HomePage());
   }
 }

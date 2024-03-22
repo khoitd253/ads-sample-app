@@ -15,6 +15,9 @@ dependencies:
       url: git@github.com:trungs99/easy_ads.git
       ref: main
 
+#  easy_ads_flutter:
+#    path: ../easy_ads
+
   get: ^4.6.6
   flutter_flavorizr: ^2.2.1
 

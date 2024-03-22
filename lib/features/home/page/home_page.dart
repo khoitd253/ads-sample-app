@@ -1,8 +1,10 @@
 import 'package:ads_sample_app/features/home/controller/home_controller.dart';
+import 'package:ads_sample_app/features/splash/controller/splash_controller.dart';
 import 'package:easy_ads_flutter/easy_ads_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../commons/widgets/resizable_text.dart';
 import '../../../main.dart';
 import '../../ads/remote/remote_config.dart';
 
@@ -55,8 +57,8 @@ class _HomePageState extends State<HomePage> {
                   Expanded(
                     child: ElevatedButton(
                       onPressed: () => controller.changeAdIndex(2),
-                      child: const Text(
-                        "Large Native",
+                      child: const ResizableText(
+                        "Large\nNative",
                         textAlign: TextAlign.center,
                       ),
                     ),
@@ -64,8 +66,8 @@ class _HomePageState extends State<HomePage> {
                   Expanded(
                     child: ElevatedButton(
                       onPressed: () => controller.changeAdIndex(3),
-                      child: const Text(
-                        "Medium Native",
+                      child: const ResizableText(
+                        "Medium\nNative",
                         textAlign: TextAlign.center,
                       ),
                     ),
@@ -73,8 +75,17 @@ class _HomePageState extends State<HomePage> {
                   Expanded(
                     child: ElevatedButton(
                       onPressed: () => controller.changeAdIndex(4),
-                      child: const Text(
-                        "Small Native",
+                      child: const ResizableText(
+                        "Small\nNative",
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: () => controller.changeAdIndex(5),
+                      child: const ResizableText(
+                        "Preload\nNative",
                         textAlign: TextAlign.center,
                       ),
                     ),
@@ -134,6 +145,17 @@ class _HomePageState extends State<HomePage> {
                   config: RemoteConfig.nativeConfig,
                   visibilityDetectorKey: runtimeType.toString(),
                 ),
+              if (controller.indexToShowAd[5])
+                if (preloadController != null)
+                  EasyPreloadNativeAd(
+                    controller: preloadController!,
+                    key: UniqueKey(),
+                    factoryId: adIdManager.largeNativeFactory,
+                    height: adIdManager.largeNativeAdHeight,
+                    color: const Color(0xfff6f6f6),
+                    border: null,
+                    padding: null,
+                  ),
             ],
           );
         },

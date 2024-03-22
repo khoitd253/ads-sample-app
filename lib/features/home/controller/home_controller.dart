@@ -4,13 +4,12 @@ import 'package:easy_ads_flutter/easy_ads_flutter.dart';
 import 'package:get/get.dart';
 
 class HomeController extends GetxController {
-  var indexToShowAd = List.generate(5, (index) => false).obs;
+  var indexToShowAd = List.generate(6, (index) => false).obs;
 
   void showInterAd() {
     EasyAds.instance.showInterstitialAd(
       adId: adIdManager.interId,
       config: RemoteConfig.interConfig,
-      immersiveModeEnabled: true,
       onDisabled: () => {},
       onAdShowed: (adNetwork, adUnitType, data) => {
         /// you should navigate
@@ -25,7 +24,6 @@ class HomeController extends GetxController {
     EasyAds.instance.showRewardAd(
       adId: adIdManager.rewardId,
       config: RemoteConfig.rewardConfig,
-      immersiveModeEnabled: true,
       onDisabled: () => {},
       onAdShowed: (adNetwork, adUnitType, data) => {
         /// you should navigate
