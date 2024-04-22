@@ -25,8 +25,35 @@
                     android:text="Ad"
                     android:textColor="#FFFFFF"
                     android:textSize="9sp" />
-            </LinearLayout>
 
+                <!-- button -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="10dp"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <Button
+                        android:id="@+id/ad_call_to_action"
+                        android:layout_width="match_parent"
+                        android:layout_height="56dp"
+                        android:layout_marginHorizontal="12.5dp"
+                        android:background="@layout/drawable_native_ad_button"
+                        android:gravity="center"
+                        android:text="INSTALL"
+                        android:textColor="#ffffff"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </LinearLayout>
+            <!-- Spacer -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="16dp"
+                android:orientation="vertical" />
             <!-- Header -->
             <LinearLayout
                 android:layout_width="match_parent"
@@ -79,57 +106,11 @@
             </LinearLayout>
 
             <!-- Spacer -->
-            <View
-                android:layout_width="0dp"
-                android:layout_height="16dp" />
-
-            <!-- Media View -->
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:paddingHorizontal="20dp">
-
-                <!-- android:layout_gravity="center_horizontal" -->
-                <com.google.android.gms.ads.nativead.MediaView
-                    android:id="@+id/ad_media"
-                    android:layout_width="match_parent"
-                    android:layout_height="120dp" />
-            </LinearLayout>
-
+                android:layout_width="0dp"
+                android:layout_height="16dp"
+                android:orientation="vertical" />
         </LinearLayout>
-
-        <!-- Spacer -->
-        <View
-            android:layout_width="0dp"
-            android:layout_height="8dp" />
-
-        <!-- button -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="5dp"
-            android:layout_marginEnd="10dp"
-            android:gravity="center"
-            android:orientation="vertical">
-
-            <Button
-                android:id="@+id/ad_call_to_action"
-                android:layout_width="match_parent"
-                android:layout_height="56dp"
-                android:layout_marginHorizontal="12.5dp"
-                android:background="@layout/drawable_native_ad_button"
-                android:gravity="center"
-                android:textColor="#ffffff"
-                android:textSize="16sp"
-                android:textStyle="bold" />
-        </LinearLayout>
-
-        <!-- Spacer -->
-        <View
-            android:layout_width="0dp"
-            android:layout_height="8dp" />
 
     </LinearLayout>
 </com.google.android.gms.ads.nativead.NativeAdView>

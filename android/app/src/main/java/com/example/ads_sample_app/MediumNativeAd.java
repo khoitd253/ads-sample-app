@@ -5,7 +5,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import com.google.android.gms.ads.nativead.MediaView;
+
 import com.google.android.gms.ads.nativead.NativeAd;
 import com.google.android.gms.ads.nativead.NativeAdView;
 import io.flutter.plugins.googlemobileads.GoogleMobileAdsPlugin.NativeAdFactory;
@@ -21,7 +21,7 @@ public class MediumNativeAd implements NativeAdFactory {
 
     @Override
     public NativeAdView createNativeAd(NativeAd nativeAd, Map<String, Object> customOptions) {
-        final NativeAdView adView = (NativeAdView) layoutInflater.inflate(R.layout.medium_native_ad, null);
+        final NativeAdView adView = (NativeAdView) layoutInflater.inflate(R.layout.medium_native_ad_up, null);
 
         // Set other ad assets.
         adView.setHeadlineView(adView.findViewById(R.id.ad_headline));
