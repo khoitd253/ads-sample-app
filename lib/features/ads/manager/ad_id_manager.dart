@@ -37,7 +37,4 @@ class AppAdIdManager extends IAdIdManager {
 
   @override
   AppAdIds? get admobAdIds => AppAdIds(appId: admobAppId);
-
-  @override
-  AppAdIds? get appLovinAdIds => null;
 }

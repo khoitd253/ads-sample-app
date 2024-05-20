@@ -3,7 +3,7 @@ description: "A new Flutter project."
 publish_to: 'none'
 version: 1.0.0+1
 environment:
-  sdk: '>=3.2.2 <4.0.0'
+  sdk: '>=3.4.0 <4.0.0'
 # This app was created with Flutter v3.19.0 - Dart v3.3.0 - Devtool v2.31.1
 
 dependencies:
@@ -25,7 +25,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
 
-  flutter_lints: ^3.0.1
+  flutter_lints: ^4.0.0
 
 flutter:
   uses-material-design: true
