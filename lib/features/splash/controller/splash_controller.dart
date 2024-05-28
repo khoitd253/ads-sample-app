@@ -69,7 +69,6 @@ class SplashController extends GetxController {
       onDismissed: (type) {
         EasyAds.instance.appLifecycleReactor?.setOnSplashScreen(false);
       },
-      orientation: AppOpenAd.orientationPortrait,
       configInterstitial: RemoteConfig.interSplashConfig,
       configAppOpen: RemoteConfig.appOpenSplashConfig,
     );

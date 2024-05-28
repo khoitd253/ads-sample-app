@@ -15,27 +15,17 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   AppLifecycleState? _state;
   StreamSubscription? _streamSubscription;
-  final ValueNotifier<bool> _isShowAd = ValueNotifier(false);
 
   @override
   void initState() {
     WidgetsBinding.instance.addObserver(this);
-    _streamSubscription = EasyAds.instance.onEvent.listen((event) {
-      if (event.adUnitType == AdUnitType.appOpen) {
-        if (event.type == AdEventType.adShowed) {
-          _isShowAd.value = true;
-        } else if (event.type == AdEventType.adDismissed) {
-          _isShowAd.value = false;
-        }
-      }
-    });
+    _streamSubscription = EasyAds.instance.onEvent.listen((event) {});
     super.initState();
   }
 
   @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
-    _isShowAd.dispose();
     _streamSubscription?.cancel();
     super.dispose();
   }
@@ -53,29 +43,8 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
-      home: const SplashPage(),
-      builder: (appContext, appChild) {
-        return ValueListenableBuilder(
-          valueListenable: _isShowAd,
-          child: appChild,
-          builder: (context, isShowingAd, child) {
-            return Stack(
-              children: [
-                if (child != null) child,
-                Visibility(
-                  visible: isShowingAd,
-                  child: Container(
-                    color: Colors.white,
-                    height: context.height,
-                    width: context.width,
-                  ),
-                ),
-              ],
-            );
-          },
-        );
-      },
+    return const GetMaterialApp(
+      home: SplashPage(),
     );
   }
 }
