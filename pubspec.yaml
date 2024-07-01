@@ -4,7 +4,7 @@ publish_to: 'none'
 version: 1.0.0+1
 environment:
   sdk: '>=3.4.0 <4.0.0'
-# This app was created with Flutter v3.19.0 - Dart v3.3.0 - Devtool v2.31.1
+# This app was created with Flutter v3.22.2 - Dart v3.3.0 - Devtool v2.31.1
 
 dependencies:
   flutter:
@@ -20,6 +20,9 @@ dependencies:
 
   get: ^4.6.6
   flutter_flavorizr: ^2.2.1
+
+  # firebase
+  firebase_core: ^2.32.0
 
 dev_dependencies:
   flutter_test:
@@ -58,6 +61,6 @@ flavorizr:
         resValues:
           ads_app_id:
             type: "string"
-            value: "real-app-id-here"
+            value: "ca-app-pub-3940256099942544~3347511713"
         firebase:
           config: ".firebase/prod/google-services.json"

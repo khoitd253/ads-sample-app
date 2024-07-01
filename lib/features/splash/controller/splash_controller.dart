@@ -38,6 +38,7 @@ class SplashController extends GetxController {
             nativeNormalId: adIdManager.nativeId,
             nativeMediumId: adIdManager.nativeId,
             nativeHighId: adIdManager.nativeId,
+            autoReloadOnFinish: false,
             limitLoad: 3,
           );
           preloadController?.load();
